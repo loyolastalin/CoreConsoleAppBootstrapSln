@@ -1,9 +1,12 @@
-﻿using ConsoleUIServiceCollectionCoreApp.Core;
+﻿using AutoMapper;
+using ConsoleUIServiceCollectionCoreApp.Core;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using ServiceCollectionCoreApp.Config;
 using ServiceCollectionCoreApp.Core;
+using ServiceCollectionCoreApp.Model;
 using System;
 
 namespace ServiceCollectionCoreApp
@@ -28,6 +31,9 @@ namespace ServiceCollectionCoreApp
             var calService = provider.GetService<ICalc>();
             calService.Add();
 
+            var mapper = provider.GetService<IMapper>();
+
+           var user =  mapper.Map<User>(new UserDto() { Name ="sdfsdf", Age =21, Sex ="F" });
 
         }
 
@@ -64,7 +70,7 @@ namespace ServiceCollectionCoreApp
             });
 
             services.AddSingleton(_configuration);
-            services.AddScoped<IConfiguration>(_ => _configuration);    
+            services.AddScoped<IConfiguration>(_ => _configuration);
 
 
             services.AddTransient<IGreetingService, GreetingService>();
@@ -72,10 +78,12 @@ namespace ServiceCollectionCoreApp
             services.AddTransient<ICalc, CalcService>();
 
             // services.AddAutoMapper(Assembly.GetExecutingAssembly());
-            //services.AddSingleton(provider => new MapperConfiguration(cfg =>
-            //{
-            //    cfg.AddProfile(new MappingProfile());
-            //}).CreateMapper());
+
+            // Auto Mapper Configurations
+            services.AddSingleton(new MapperConfiguration(mc =>
+            {
+                mc.AddProfile(new MappingProfile());
+            }).CreateMapper());
 
         }
     }
