@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "ServiceCollectionCoreApp": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "Test1": "Value",
+        "CORE_CONSOLE_ENV": "dev"
+      }
+    }
+  }
+}

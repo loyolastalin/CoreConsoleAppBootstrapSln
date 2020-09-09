@@ -39,16 +39,20 @@ namespace ServiceCollectionCoreApp
 
         private static void ConfigureServices(IServiceCollection services)
         {
-            var environmentName = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
+            var environmentName = Environment.GetEnvironmentVariable("CORE_CONSOLE_ENV");
 
             var builder = new ConfigurationBuilder()
                 .AddJsonFile("appsettings.json", optional: false)
-                .AddJsonFile($"appsettings.{environmentName}.json", true)
+                .AddJsonFile($"appsettings_{environmentName}.json", true)
                 // Override config by env, using like Logging:Level or Logging__Level
                 .AddEnvironmentVariables();
 
             _configuration = builder.Build();
 
+            // Reading the values from appsettings, appsetting.dev, environment variable respectiviltily
+            var appsetting = _configuration.GetValue<int>("LoopTimes");
+            var appsetting_env = _configuration.GetValue<string>("connectionstring");
+            var enReading = _configuration.GetValue<string>("Test1");
 
             /*Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
